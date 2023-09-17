@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/tauri";
 
   let inputSeed = "swing benefit this wish connect timber scissors onion quote picnic garment film";
@@ -7,9 +6,6 @@
   let cipher = "";
   let passwordWarning = "";
   let showPassword = false;
-
-
-
 
   function togglePasswordVisibility() {
     showPassword = !showPassword;
@@ -23,10 +19,6 @@
     }
 }
 
-
-  onMount(() => {
-
-  });
 </script>
 
 
