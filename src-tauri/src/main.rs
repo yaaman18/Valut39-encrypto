@@ -1,9 +1,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-extern crate chacha20;
-extern crate bs58;
-
 use std::collections::HashMap;
 use chacha20::ChaCha20;
 use chacha20::cipher::{KeyIvInit, StreamCipher};
