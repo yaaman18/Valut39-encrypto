@@ -12,15 +12,8 @@ use tokio::fs::read_to_string;
 use generic_array::GenericArray;
 use typenum::{U32, U12};
 use std::env;
-use std::io::{self, Write};
 use std::path::PathBuf;
 
-
-#[derive(serde::Deserialize)]
-struct HandleDataArgs {
-    input_seed: String,
-    password: String,
-}
 
 #[derive(serde::Deserialize)]
 struct MinimalizeSeedsArgs {
@@ -29,9 +22,12 @@ struct MinimalizeSeedsArgs {
 
 
 #[tauri::command]
-async fn handle_data(args: HandleDataArgs) -> tauri::Result<String> {
+async fn handle_data(input_seed: String, password: String) -> tauri::Result<String> {
+    println!("Received input_seed: {}", input_seed);
+    println!("Received password: {}", password);
+
     // minimalize_seeds関数を呼び出して、短縮されたシードフレーズを取得
-    let minimalized_seeds = match minimalize_seeds(MinimalizeSeedsArgs { input_seed_phrase: args.input_seed }).await {
+    let minimalized_seeds = match minimalize_seeds(MinimalizeSeedsArgs { input_seed_phrase: input_seed }).await {
         Ok(result) => result,
         Err(e) => {
             return Err(e.into());
@@ -39,27 +35,24 @@ async fn handle_data(args: HandleDataArgs) -> tauri::Result<String> {
     };
 
     // generate_cipher関数を呼び出して、暗号文を生成
-    let cipher_text = match generate_cipher(&minimalized_seeds, &args.password).await {
+    let cipher_text = match generate_cipher(&minimalized_seeds, &password).await {
         Ok(result) => result,
         Err(e) => {
-           return Err(tauri::Error::from(io::Error::new(io::ErrorKind::Other, e.to_string())));
+            return Err(tauri::Error::from(std::io::Error::new(std::io::ErrorKind::Other, e.to_string())));
         }
     };
 
-    // 生成された暗号文を返す
     Ok(cipher_text)
 }
 
 #[tauri::command]
 async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String> {
 
-  // Construct the path to the wordlist_en.txt file
     let mut path_en = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     path_en.push("src");
     path_en.push("resources");
     path_en.push("wordlist_en.txt");
 
-    // Construct the path to the wordlist_minimal.txt file
     let mut path_minimal = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     path_minimal.push("src");
     path_minimal.push("resources");
@@ -81,7 +74,7 @@ async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String> {
         .filter_map(|seed| en_to_index.get(seed).map(|&index| &wordlist_minimal[index]))
         .cloned()
         .collect::<Vec<String>>()
-        .concat();  // Changed from .join(" ") to .concat()
+        .concat();
 
     Ok(minimalized_seeds)
 }
@@ -138,50 +131,6 @@ async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box
 
 #[tokio::main]
 async fn main() {
-    let mut input_seed = String::new();
-    let mut password = String::new();
-
-
-    print!("Please enter your seed phrase: ");
-    io::stdout().flush().unwrap();
-    io::stdin().read_line(&mut input_seed).unwrap();
-
-    print!("Please enter your password: ");
-    io::stdout().flush().unwrap();
-    io::stdin().read_line(&mut password).unwrap();
-
-    // 末尾の改行を削除
-    input_seed = input_seed.trim().to_string();
-    password = password.trim().to_string();
-
-    let args = MinimalizeSeedsArgs {
-        input_seed_phrase: input_seed,
-    };
-
-    let minimalized_seeds = match minimalize_seeds(args).await {
-         Ok(result) => {
-            // minimalized_seedsの内容をターミナルに出力
-            println!("minimalized_seeds: {}", result);
-            result
-        },
-        Err(e) => {
-            println!("Error in minimalize_seeds: {}", e);
-            return;
-        }
-    };
-
-    let cipher = match generate_cipher(&minimalized_seeds, &password).await {
-        Ok(result) => result,
-        Err(e) => {
-            println!("Error in generate_cipher: {}", e);
-            return;
-        }
-    };
-
-    println!("Generated cipher text: {}", cipher);
-
-    println!("minimalized_seeds: {}", minimalized_seeds);
-
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![handle_data, minimalize_seeds])
         .run(tauri::generate_context!())

@@ -2,11 +2,12 @@
   import { onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/tauri";
 
-  let inputSeed = "";
-  let password = "";
+  let inputSeed = "swing benefit this wish connect timber scissors onion quote picnic garment film";
+  let password = "hogehoge";
   let cipher = "";
   let passwordWarning = "";
   let showPassword = false;
+
 
 
 
@@ -16,17 +17,7 @@
 
   async function handleFormSubmit() {
     try {
-      console.log("inputSeed:", inputSeed);
-      console.log("password:", password);
-      console.log("Type of inputSeed:", typeof inputSeed);
-console.log("Type of password:", typeof password);
-
-    // invokeメソッドの呼び出し前のデバッグログ
-        console.log("Invoking handle_data...");
-        cipher = await invoke('handle_data', { input_seed: inputSeed, password });
-        console.log("handle_data invoked successfully.");
-        console.log("Cipher text generated:", cipher);
-        console.log("Result:", cipher);
+        cipher = await invoke('handle_data', { inputSeed: inputSeed, password: password });
     } catch (error) {
         console.error("Error invoking handle_data:", error);
     }
