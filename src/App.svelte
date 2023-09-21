@@ -1,8 +1,8 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
 
-  let inputSeed = "swing benefit this wish connect timber scissors onion quote picnic garment film";
-  let password = "hogehoge";
+  let inputSeed = "";
+  let password = "";
   let cipher = "";
   let passwordWarning = "";
   let showPassword = false;
@@ -12,6 +12,19 @@
   }
 
   async function handleFormSubmit() {
+
+     const regex = /^[a-zA-Z0-9]*$/;
+
+    if (!regex.test(inputSeed) || !regex.test(password)) {
+      passwordWarning = "半角英数字以外の文字は使用できません。";
+      return;
+    }
+
+     if (password.length > 40) {
+      passwordWarning = "パスワードの文字数は40文字以内にしてください。";
+      return;
+    }
+
     try {
         cipher = await invoke('handle_data', { inputSeed: inputSeed, password: password });
     } catch (error) {
