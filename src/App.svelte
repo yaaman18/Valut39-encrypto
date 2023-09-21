@@ -13,12 +13,6 @@
 
   async function handleFormSubmit() {
 
-     const regex = /^[a-zA-Z0-9]*$/;
-
-    if (!regex.test(inputSeed) || !regex.test(password)) {
-      passwordWarning = "半角英数字以外の文字は使用できません。";
-      return;
-    }
 
      if (password.length > 40) {
       passwordWarning = "パスワードの文字数は40文字以内にしてください。";
@@ -26,9 +20,9 @@
     }
 
     try {
-        cipher = await invoke('handle_data', { inputSeed: inputSeed, password: password });
+        cipher = await invoke('wrap_handle_data', { inputSeed: inputSeed, password: password });
     } catch (error) {
-        console.error("Error invoking handle_data:", error);
+        console.error("Error invoking wrap_handle_data:", error);
     }
 }
 
