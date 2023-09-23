@@ -76,14 +76,10 @@ pub async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String
 
 
 async fn string_to_32_byte_array(str: &str) -> Result<[u8; 32], Box<dyn Error>> {
-    let mut byte_array = [0u8; 32];
-    let encoded = str.as_bytes();
-
-    if encoded.len() > 32 {
-        return Err("String too long to convert to 32-byte array".into());
-    }
-
-    byte_array[0..encoded.len()].copy_from_slice(encoded);
+    let mut hasher = Sha256::new();
+    hasher.update(str);
+    let result = hasher.finalize();
+    let byte_array: [u8; 32] = result.into();
     Ok(byte_array)
 }
 
@@ -97,30 +93,14 @@ async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box
     let nonce_buff = [0u8; 12];
     let nonce: GenericArray<u8, U12> = GenericArray::clone_from_slice(&nonce_buff);
 
-    let minimal_seed = string_to_32_byte_array(input_seed).await?;
+    // 元のinput_seedをバイト配列に変換
+    let input_seed_bytes = input_seed.as_bytes();
 
     let mut cipher = ChaCha20::new(&secret, &nonce);
 
-    let mut encrypted_bytes = minimal_seed.clone();
+    let mut encrypted_bytes = input_seed_bytes.to_vec();
     cipher.apply_keystream(&mut encrypted_bytes);
     let encrypted = bs58::encode(encrypted_bytes).into_string();
-
-    if encrypted.len() > 44 {
-        return Err("Encrypted data is too long".into());
-    }
-
-    let mut decrypted_bytes = bs58::decode(&encrypted).into_vec()?;
-    let original_length = input_seed.as_bytes().len();
-    decrypted_bytes.truncate(original_length);
-
-    let mut cipher = ChaCha20::new(&secret, &nonce);
-    cipher.apply_keystream(&mut decrypted_bytes);
-
-    let decrypted = String::from_utf8(decrypted_bytes)?;
-
-    if decrypted != input_seed {
-        return Err("Decrypted data does not match minimal_seed".into());
-    }
 
     Ok(encrypted)
 }

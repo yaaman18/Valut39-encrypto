@@ -13,12 +13,6 @@
 
   async function handleFormSubmit() {
 
-
-     if (password.length > 80) {
-      passwordWarning = "パスワードの文字数は40文字以内にしてください。";
-      return;
-    }
-
     try {
         cipher = await invoke('wrap_handle_data', { inputSeed: inputSeed, password: password });
     } catch (error) {
@@ -55,7 +49,7 @@
   {#if showPassword}
     <input type="text" bind:value={password} style="width: 100%;" minlength="4" maxlength="80" class="password-input" />
   {:else}
-    <input type="password" bind:value={password} style="width: 100%;" minlength="4" maxlength="40" class="password-input" />
+    <input type="password" bind:value={password} style="width: 100%;" minlength="4" class="password-input" />
   {/if}
   <button type="button" on:click={togglePasswordVisibility} class="toggle-button">{showPassword ? '非表示にする' : 'パスワードを表示する'}</button>
   </label>
