@@ -7,6 +7,7 @@ use typenum::{U32, U12};
 use std::env;
 use std::path::PathBuf;
 use tokio::fs::read_to_string;
+use sha2::{Digest, Sha256};
 
 
 #[derive(serde::Deserialize)]
@@ -87,11 +88,12 @@ async fn string_to_32_byte_array(str: &str) -> Result<[u8; 32], Box<dyn Error>> 
 }
 
 async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box<dyn Error>> {
-    let mut secret_buff = [0u8; 32];
-    let password_bytes = password.as_bytes();
-    secret_buff[(32 - password_bytes.len())..].copy_from_slice(password_bytes);  // 32に修正
+    // パスワードをSHA-256でハッシュ化
+    let mut hasher = Sha256::new();
+    hasher.update(password);
+    let result = hasher.finalize();
 
-    let secret: GenericArray<u8, U32> = GenericArray::clone_from_slice(&secret_buff);
+    let secret: GenericArray<u8, U32> = GenericArray::clone_from_slice(&result);
     let nonce_buff = [0u8; 12];
     let nonce: GenericArray<u8, U12> = GenericArray::clone_from_slice(&nonce_buff);
 
@@ -111,7 +113,7 @@ async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box
     let original_length = input_seed.as_bytes().len();
     decrypted_bytes.truncate(original_length);
 
-    let mut cipher = ChaCha20::new(&secret.into(), &nonce.into());
+    let mut cipher = ChaCha20::new(&secret, &nonce);
     cipher.apply_keystream(&mut decrypted_bytes);
 
     let decrypted = String::from_utf8(decrypted_bytes)?;

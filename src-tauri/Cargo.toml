@@ -25,6 +25,7 @@ typenum = "1.16.0"
 anyhow = "1.0.75"
 tauri-api = "0.7.6"
 semver = "1.0"
+sha2 = "0.9"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

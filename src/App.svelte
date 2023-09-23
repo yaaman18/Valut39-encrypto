@@ -14,7 +14,7 @@
   async function handleFormSubmit() {
 
 
-     if (password.length > 40) {
+     if (password.length > 80) {
       passwordWarning = "パスワードの文字数は40文字以内にしてください。";
       return;
     }
@@ -44,6 +44,7 @@
   <h3>暗号生成</h3>
   <p>こちらにお手持ちのwalletのシードフレーズと復号する時に必要なパスワードを入力してください。</p>
   <p>パスワードは暗号文からシードフレーズを復元する時に必要なので絶対に忘れないでください。</p>
+  <p>入力するパスワードは半角英数字のみでスペースを入れずに入力してください。</p>
   <form on:submit|preventDefault={handleFormSubmit}>
   <label>
     シードフレーズ:
