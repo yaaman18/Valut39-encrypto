@@ -36,7 +36,7 @@
   </ul>
   <p>Nil Walletで、デジタル通貨の新しい時代を体験しましょう。今すぐダウンロードして、安全で便利なデジタル資産管理の世界へ飛び込みましょう。</p>
   <h3>暗号生成</h3>
-  <p>こちらにお手持ちのwalletのシードフレーズと復号する時に必要なパスワードを入力してください。</p>
+  <p>こちらにお手持ちのwalletのシードフレーズと復号する時に必要なパスワード（最低８文字）を入力してください。</p>
   <p>パスワードは暗号文からシードフレーズを復元する時に必要なので絶対に忘れないでください。</p>
   <p>入力するパスワードは半角英数字のみでスペースを入れずに入力してください。</p>
   <form on:submit|preventDefault={handleFormSubmit}>
@@ -49,7 +49,7 @@
   {#if showPassword}
     <input type="text" bind:value={password} style="width: 100%;" minlength="4" maxlength="80" class="password-input" />
   {:else}
-    <input type="password" bind:value={password} style="width: 100%;" minlength="4" class="password-input" />
+    <input type="password" bind:value={password} style="width: 100%;" minlength="8" class="password-input" />
   {/if}
   <button type="button" on:click={togglePasswordVisibility} class="toggle-button">{showPassword ? '非表示にする' : 'パスワードを表示する'}</button>
   </label>
