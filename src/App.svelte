@@ -1,12 +1,10 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import * as bip39 from 'bip39';
 
   let inputSeed = "";
   let password = "";
   let cipher = "";
   let passwordWarning = "";
-  let seedWarning = "";
   let showPassword = false;
 
   function togglePasswordVisibility() {
@@ -14,13 +12,6 @@
   }
 
   async function handleFormSubmit() {
-
-    if (!bip39.validateMnemonic(inputSeed)) {
-      seedWarning = "無効なシードフレーズです。BIP39準拠のシードフレーズを入力してください。";
-      return;
-    } else {
-      seedWarning = "";
-    }
 
     try {
         cipher = await invoke('wrap_handle_data', { inputSeed: inputSeed, password: password });
@@ -59,14 +50,13 @@ function copyToClipboard(text: string) {
   <p>こちらにお手持ちのwalletのシードフレーズと復号する時に必要なパスワード（最低８文字）を入力してください。</p>
   <p>パスワードは暗号文からシードフレーズを復元する時に必要なので絶対に忘れないでください。</p>
   <p>入力するパスワードは半角英数字のみでスペースを入れずに入力してください。</p>
+  <p>尚オフラン環境でのみ利用可能になっています。</p>
+  <p>また、パソコンの中にシードフレーズもパスワードも保存しないので安心してご利用いただけます</p>
   <form on:submit|preventDefault={handleFormSubmit}>
   <label>
     シードフレーズ:
       <input type="text" bind:value={inputSeed} style="width: 100%;" />
   </label>
-   {#if seedWarning}
-    <p style="color: red;">{seedWarning}</p>
-  {/if}
   <label>
   パスワード:
   {#if showPassword}
