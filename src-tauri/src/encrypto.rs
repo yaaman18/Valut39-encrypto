@@ -18,8 +18,6 @@ pub struct MinimalizeSeedsArgs {
 
 #[tauri::command]
 pub async fn handle_data(input_seed: String, password: String) -> tauri::Result<String> {
-    println!("Received input_seed: {}", input_seed);
-    println!("Received password: {}", password);
 
     // minimalize_seeds関数を呼び出して、短縮されたシードフレーズを取得
     let minimalized_seeds = match minimalize_seeds(MinimalizeSeedsArgs { input_seed_phrase: input_seed }).await {

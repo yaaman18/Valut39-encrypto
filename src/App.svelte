@@ -1,10 +1,12 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+  import * as bip39 from 'bip39';
 
   let inputSeed = "";
   let password = "";
   let cipher = "";
   let passwordWarning = "";
+  let seedWarning = "";
   let showPassword = false;
 
   function togglePasswordVisibility() {
@@ -13,11 +15,29 @@
 
   async function handleFormSubmit() {
 
+    if (!bip39.validateMnemonic(inputSeed)) {
+      seedWarning = "無効なシードフレーズです。BIP39準拠のシードフレーズを入力してください。";
+      return;
+    } else {
+      seedWarning = "";
+    }
+
     try {
         cipher = await invoke('wrap_handle_data', { inputSeed: inputSeed, password: password });
     } catch (error) {
         console.error("Error invoking wrap_handle_data:", error);
     }
+}
+
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text).then(
+    function () {
+      console.log("コピー成功");
+    },
+    function (err) {
+      console.error("コピー失敗", err);
+    }
+  );
 }
 
 </script>
@@ -42,14 +62,19 @@
   <form on:submit|preventDefault={handleFormSubmit}>
   <label>
     シードフレーズ:
-     <input type="text" bind:value={inputSeed} style="width: 100%;" />
+      <input type="text" bind:value={inputSeed} style="width: 100%;" />
   </label>
+   {#if seedWarning}
+    <p style="color: red;">{seedWarning}</p>
+  {/if}
   <label>
   パスワード:
   {#if showPassword}
     <input type="text" bind:value={password} style="width: 100%;" minlength="4" maxlength="80" class="password-input" />
+    <button type="button" on:click={() => copyToClipboard(password)}>パスワードをコピー</button>
   {:else}
     <input type="password" bind:value={password} style="width: 100%;" minlength="8" class="password-input" />
+    <button type="button" on:click={() => copyToClipboard(password)}>パスワードをコピー</button>
   {/if}
   <button type="button" on:click={togglePasswordVisibility} class="toggle-button">{showPassword ? '非表示にする' : 'パスワードを表示する'}</button>
   </label>
