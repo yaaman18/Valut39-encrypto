@@ -3,8 +3,6 @@
 
 use std::fs;
 use std::path::PathBuf;
-use tauri::CustomMenuItem;
-use tauri::Manager;
 
 mod encrypto;
 

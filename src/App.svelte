@@ -76,7 +76,9 @@ function copyToClipboard(text: string) {
 
   {#if cipher}
     <p>暗号文: {cipher}</p>
+    <button type="button" on:click={() => copyToClipboard(cipher)}>暗号文をコピー</button>
   {/if}
+
 
 </main>
 

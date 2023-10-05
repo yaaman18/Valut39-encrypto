@@ -73,13 +73,7 @@ pub async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String
 }
 
 
-async fn string_to_32_byte_array(str: &str) -> Result<[u8; 32], Box<dyn Error>> {
-    let mut hasher = Sha256::new();
-    hasher.update(str);
-    let result = hasher.finalize();
-    let byte_array: [u8; 32] = result.into();
-    Ok(byte_array)
-}
+
 
 async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box<dyn Error>> {
     // パスワードをSHA-256でハッシュ化
