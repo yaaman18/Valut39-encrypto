@@ -6,6 +6,10 @@ use std::path::PathBuf;
 
 mod encrypto;
 
+// リソースファイルの内容をバイナリに埋め込む
+const WORDLIST_EN: &str = include_str!("../../src-tauri/src/resources/wordlist_en.txt");
+const WORDLIST_MINIMAL: &str = include_str!("../../src-tauri/src/resources/wordlist_minimal.txt");
+
 #[tauri::command]
 async fn wrap_handle_data(input_seed: String, password: String) -> tauri::Result<String> {
     encrypto::handle_data(input_seed, password).await
