@@ -1750,7 +1750,7 @@ dependencies = [
 
 [[package]]
 name = "nil_wallet_encrypto"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "anyhow",
  "bs58",
