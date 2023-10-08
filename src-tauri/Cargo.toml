@@ -6,7 +6,7 @@ description ="The application for encrypting the seed phrase"
 authors = ["Solidity Materials Co., Ltd. <corporation@soliditymaterials.com>"]
 license = "Copyright © 2023 Solidity Materials Co., Ltd. All Rights Reserved"
 repository = ""
-edition = "2023"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
