@@ -4,11 +4,11 @@ use chacha20::cipher::{KeyIvInit, StreamCipher};
 use std::error::Error;
 use generic_array::GenericArray;
 use typenum::{U32, U12};
-use std::env;
-use std::path::PathBuf;
-use tokio::fs::read_to_string;
 use sha2::{Digest, Sha256};
 
+// リソースファイルの内容をバイナリに埋め込む
+const WORDLIST_EN: &str = include_str!("../../src-tauri/src/resources/wordlist_en.txt");
+const WORDLIST_MINIMAL: &str = include_str!("../../src-tauri/src/resources/wordlist_minimal.txt");
 
 #[derive(serde::Deserialize)]
 pub struct MinimalizeSeedsArgs {
@@ -41,23 +41,9 @@ pub async fn handle_data(input_seed: String, password: String) -> tauri::Result<
 #[tauri::command]
 pub async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String> {
 
-    let mut path_en = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    path_en.push("src");
-    path_en.push("resources");
-    path_en.push("wordlist_en.txt");
+    let wordlist_en: Vec<String> = WORDLIST_EN.lines().map(|s| s.to_owned()).collect();
+    let wordlist_minimal: Vec<String> = WORDLIST_MINIMAL.lines().map(|s| s.to_owned()).collect();
 
-    let mut path_minimal = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    path_minimal.push("src");
-    path_minimal.push("resources");
-    path_minimal.push("wordlist_minimal.txt");
-
-    println!("Path to wordlist_en.txt: {:?}", path_en);
-
-    let wordlist_en = read_to_string(&path_en).await?;
-    let wordlist_minimal = read_to_string(&path_minimal).await?;
-
-    let wordlist_en: Vec<String> = wordlist_en.lines().map(|s| s.to_owned()).collect();
-    let wordlist_minimal: Vec<String> = wordlist_minimal.lines().map(|s| s.to_owned()).collect();
 
     let en_to_index: HashMap<_, _> = wordlist_en.iter().enumerate().map(|(i, word)| (word, i)).collect();
 
@@ -70,6 +56,7 @@ pub async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String
         .concat();
 
     Ok(minimalized_seeds)
+
 }
 
 

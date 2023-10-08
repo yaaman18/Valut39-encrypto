@@ -6,12 +6,36 @@
   let cipher = "";
   let passwordWarning = "";
   let showPassword = false;
+  let seedWarning = "";
 
   function togglePasswordVisibility() {
     showPassword = !showPassword;
   }
 
   async function handleFormSubmit() {
+  seedWarning = "";
+  cipher = "";
+  try {
+    const wordlist_en:string = await invoke('read_wordlist_file');
+    const wordSet = new Set(wordlist_en.split('\n'));
+    const inputWords = inputSeed.split(' ');
+
+    if (inputWords.length !== 12) {
+    seedWarning = "シードフレーズは12単語で入力してください";
+    return;
+  }
+
+
+    for (let word of inputWords) {
+      if (!wordSet.has(word)) {
+        seedWarning = "シードフレーズの単語が間違っています";
+        return;
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+
 
     try {
         cipher = await invoke('wrap_handle_data', { inputSeed: inputSeed, password: password });
@@ -30,7 +54,6 @@ function copyToClipboard(text: string) {
     }
   );
 }
-
 </script>
 
 
@@ -57,6 +80,10 @@ function copyToClipboard(text: string) {
     シードフレーズ:
       <input type="text" bind:value={inputSeed} style="width: 100%;" />
   </label>
+  {#if seedWarning}
+  <p style="color: red;">{seedWarning}</p>
+{/if}
+
   <label>
   パスワード:
   {#if showPassword}
@@ -78,8 +105,6 @@ function copyToClipboard(text: string) {
     <p>暗号文: {cipher}</p>
     <button type="button" on:click={() => copyToClipboard(cipher)}>暗号文をコピー</button>
   {/if}
-
-
 </main>
 
 <style>

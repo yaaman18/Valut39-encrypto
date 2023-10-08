@@ -1749,6 +1749,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "nil_wallet_encrypto"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "bs58",
+ "chacha20",
+ "fs2",
+ "generic-array",
+ "semver 1.0.18",
+ "serde",
+ "serde_json",
+ "sha2 0.9.9",
+ "tauri",
+ "tauri-api",
+ "tauri-build",
+ "tokio",
+ "typenum",
+]
+
+[[package]]
 name = "nodrop"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2828,26 +2848,6 @@ dependencies = [
  "gobject-sys",
  "libc",
  "system-deps 5.0.0",
-]
-
-[[package]]
-name = "stable"
-version = "0.0.0"
-dependencies = [
- "anyhow",
- "bs58",
- "chacha20",
- "fs2",
- "generic-array",
- "semver 1.0.18",
- "serde",
- "serde_json",
- "sha2 0.9.9",
- "tauri",
- "tauri-api",
- "tauri-build",
- "tokio",
- "typenum",
 ]
 
 [[package]]
