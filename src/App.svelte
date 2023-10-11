@@ -25,6 +25,12 @@
     return;
   }
 
+  const uniqueWordsSet = new Set(inputWords);
+    if (uniqueWordsSet.size !== inputWords.length) {
+      seedWarning = "シードフレーズに同じ単語を2回入力しないでください";
+      return;
+    }
+
 
     for (let word of inputWords) {
       if (!wordSet.has(word)) {
