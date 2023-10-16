@@ -13,8 +13,8 @@
   "tauri": {
     "allowlist": {
       "all": false,
-      "path":{
-        "all":true
+      "path": {
+        "all": true
       },
       "shell": {
         "all": false,

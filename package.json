@@ -8,11 +8,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "format": "prettier --write  --plugin prettier-plugin-svelte .",
     "tauri": "tauri"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.4.0",
-    "bip39": "^3.1.0"
+    "bip39": "^3.1.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-svelte": "^3.0.3"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
