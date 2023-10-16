@@ -20,9 +20,9 @@
     const wordSet = new Set(wordlist_en.split('\n'));
     const inputWords = inputSeed.split(' ');
 
-    if (inputWords.length !== 12) {
-    seedWarning = "シードフレーズは12単語で入力してください";
-    return;
+  if (inputWords.length < 12 || inputWords.length > 16) {
+  seedWarning = "シードフレーズは12単語から16単語までで入力してください";
+  return;
   }
 
   const uniqueWordsSet = new Set(inputWords);
@@ -78,7 +78,7 @@ function copyToClipboard(text: string) {
   <h3>暗号生成</h3>
   <p>こちらにお手持ちのwalletのシードフレーズと復号する時に必要なパスワード（最低８文字）を入力してください。</p>
   <p>パスワードは暗号文からシードフレーズを復元する時に必要なので絶対に忘れないでください。</p>
-  <p>入力するパスワードは半角英数字のみでスペースを入れずに入力してください。</p>
+  <p>入力するパスワードは半角英数字のみでスペースを入れずに、１２文字から１６文字の間で入力してください。</p>
   <p>尚オフラン環境でのみ利用可能になっています。</p>
   <p>また、パソコンの中にシードフレーズもパスワードも保存しないので安心してご利用いただけます</p>
   <form on:submit|preventDefault={handleFormSubmit}>
