@@ -9,7 +9,9 @@
   let seedWarning = "";
   let seedWordCount = 0;
 
-   $: seedWordCount = inputSeed.split(' ').filter(word => word.length > 0).length;
+  $: seedWordCount = inputSeed
+    .split(" ")
+    .filter((word) => word.length > 0).length;
 
   function togglePasswordVisibility() {
     showPassword = !showPassword;
