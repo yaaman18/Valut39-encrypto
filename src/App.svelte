@@ -208,7 +208,7 @@
   input {
     padding: 5px;
     font-size: 16px;
-    width: 40vw;
+    width: 48vw;
   }
 
   .toggle-button {
