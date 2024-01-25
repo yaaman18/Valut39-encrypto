@@ -1749,26 +1749,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nil_wallet_encrypto"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "bs58",
- "chacha20",
- "fs2",
- "generic-array",
- "semver 1.0.18",
- "serde",
- "serde_json",
- "sha2 0.9.9",
- "tauri",
- "tauri-api",
- "tauri-build",
- "tokio",
- "typenum",
-]
-
-[[package]]
 name = "nodrop"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3606,6 +3586,26 @@ name = "valuable"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "830b7e5d4d90034032940e4ace0d9a9a057e7a45cd94e6c007832e39edb82f6d"
+
+[[package]]
+name = "valut39_encrypto"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "bs58",
+ "chacha20",
+ "fs2",
+ "generic-array",
+ "semver 1.0.18",
+ "serde",
+ "serde_json",
+ "sha2 0.9.9",
+ "tauri",
+ "tauri-api",
+ "tauri-build",
+ "tokio",
+ "typenum",
+]
 
 [[package]]
 name = "vcpkg"

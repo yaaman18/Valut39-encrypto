@@ -1,10 +1,10 @@
 [package]
-name = "nil_wallet_encrypto"
+name = "valut39_encrypto"
 version = "0.0.1"
 description ="The application for encrypting the seed phrase"
 
 authors = ["Solidity Materials Co., Ltd. <corporation@soliditymaterials.com>"]
-license = "Copyright © 2023 Solidity Materials Co., Ltd. All Rights Reserved"
+license = "Copyright © 2024 Solidity Materials Co., Ltd. All Rights Reserved"
 repository = ""
 edition = "2021"
 
