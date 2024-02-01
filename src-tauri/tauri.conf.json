@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Nil-wallet-encrypto",
+    "productName": "Valut39-encrypto",
     "version": "0.0.0"
   },
   "tauri": {
@@ -29,7 +29,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.encrypto.nilwallet",
+      "identifier": "com.encrypto.valut39",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -45,7 +45,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "nil_wallet_encrypto",
+        "title": "Valut39_encrypto",
         "width": 800,
         "height": 600
       }
