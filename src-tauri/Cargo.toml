@@ -24,9 +24,8 @@ bs58 = "0.5.0"
 generic-array = "0.14.7"
 typenum = "1.16.0"
 anyhow = "1.0.75"
-tauri-api = "0.7.6"
 semver = "1.0"
-sha2 = "0.9"
+sha2 = "0.10.8"
 
 
 [features]
