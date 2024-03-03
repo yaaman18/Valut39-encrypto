@@ -27,10 +27,6 @@
 
       seedWordCount = inputWords.length;
 
-      if (inputWords.length < 12 || inputWords.length > 16) {
-        seedWarning = "シードフレーズは12単語から16単語までで入力してください";
-        return;
-      }
 
       const uniqueWordsSet = new Set(inputWords);
       if (uniqueWordsSet.size !== inputWords.length) {

@@ -59,12 +59,12 @@ pub async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String
 
 }
 
-fn string_to_32_byte_array(input: &str) -> Result<Vec<u8>, &'static str> {
-    let mut buffer = vec![0u8; 32]; // 32 bytes buffer initialized with zeros
+fn string_to_48_byte_array(input: &str) -> Result<Vec<u8>, &'static str> {
+    let mut buffer = vec![0u8; 48]; // 48 bytes buffer initialized with zeros
     let input_bytes = input.as_bytes();
 
     if input_bytes.len() > buffer.len() {
-        return Err("String too long to convert to 32-byte array");
+        return Err("String too long to convert to 48-byte array");
     }
 
     buffer[..input_bytes.len()].copy_from_slice(input_bytes);
@@ -86,8 +86,8 @@ async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box
     let nonce_buff = [0u8; 12];
     let nonce: GenericArray<u8, U12> = GenericArray::clone_from_slice(&nonce_buff);
 
-    // 元のinput_seedを32バイト配列に変換
-    let input_seed_bytes = match string_to_32_byte_array(input_seed) {
+
+    let input_seed_bytes = match string_to_48_byte_array(input_seed) {
         Ok(buffer) => buffer,
         Err(e) => return Err(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidInput, e))),
     };
