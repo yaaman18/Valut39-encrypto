@@ -101,7 +101,7 @@
   <form on:submit|preventDefault={handleFormSubmit}>
     <label>
       シードフレーズ:
-      <input type="text" bind:value={inputSeed} style="width: 100%;" />
+      <textarea bind:value={inputSeed} style="width: 100%;" rows="2"></textarea>
     </label>
     <p>入力した単語数: {seedWordCount}</p>
     {#if seedWarning}
@@ -200,6 +200,11 @@
   label {
     display: block;
     margin-bottom: 10px;
+  }
+  textarea{
+    padding: 5px;
+    font-size: 16px;
+    width: 48vw;
   }
   input {
     padding: 5px;
