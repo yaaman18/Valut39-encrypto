@@ -64,6 +64,15 @@
       },
     );
   }
+
+  const handlePaste = (event: ClipboardEvent) => {
+    event.preventDefault();
+    const clipboardData = event.clipboardData;
+    if (clipboardData) {
+        const pastedData = clipboardData.getData('text');
+        inputSeed = pastedData.replace(/\n/g, ' ');
+    }
+};
 </script>
 
 <main>
@@ -101,7 +110,7 @@
   <form on:submit|preventDefault={handleFormSubmit}>
     <label>
       シードフレーズ:
-      <textarea bind:value={inputSeed} style="width: 100%;" rows="2"></textarea>
+      <textarea bind:value={inputSeed} style="width: 100%; white-space: pre-wrap;" rows="2" on:paste={handlePaste}></textarea>
     </label>
     <p>入力した単語数: {seedWordCount}</p>
     {#if seedWarning}
@@ -205,6 +214,7 @@
     padding: 5px;
     font-size: 16px;
     width: 48vw;
+    height: 12vw;
   }
   input {
     padding: 5px;
