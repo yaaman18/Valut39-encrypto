@@ -20,10 +20,18 @@
   async function handleFormSubmit() {
     seedWarning = "";
     cipher = "";
+
+    const inputWords = inputSeed.trim().split(/\s+/);
+    seedWordCount = inputWords.length;
+
+    if (seedWordCount < 12 || seedWordCount > 24) {
+        seedWarning = "シードフレーズは12文字以上24文字以下で入力してください";
+        return;
+    }
     try {
       const wordlist_en: string = await invoke("read_wordlist_file");
       const wordSet = new Set(wordlist_en.split("\n"));
-      const inputWords = inputSeed.split(" ");
+      const inputWords = inputSeed.trim().split(/\s+/).filter(word => word.length > 0);
 
       seedWordCount = inputWords.length;
 
@@ -35,10 +43,10 @@
       }
 
       for (let word of inputWords) {
-        if (!wordSet.has(word)) {
-          seedWarning = "シードフレーズの単語が間違っています";
-          return;
-        }
+        if (inputWords.length < minimumWordCount || inputWords.some(word => !wordSet.has(word))) {
+  seedWarning = "シードフレーズの単語が間違っています";
+  return;
+}
       }
     } catch (error) {
       console.error("Error:", error);
@@ -70,9 +78,11 @@
     const clipboardData = event.clipboardData;
     if (clipboardData) {
         const pastedData = clipboardData.getData('text');
-        inputSeed = pastedData.replace(/\n/g, ' ');
+        // CRLFをLFに置換して、不要な改行を除去
+        inputSeed = pastedData.replace(/\r\n/g, '\n').replace(/\n/g, ' ');
     }
-};
+  };
+
 </script>
 
 <main>

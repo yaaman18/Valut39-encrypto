@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "format": "prettier --write  --plugin prettier-plugin-svelte .",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tauri:build:debug": "tauri build --debug"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.1",
