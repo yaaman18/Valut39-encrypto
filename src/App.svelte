@@ -31,7 +31,7 @@
     }
     try {
       const wordlist_en: string = await invoke("read_wordlist_file");
-      const wordSet = new Set(wordlist_en.split("\n"));
+      const wordSet = new Set(wordlist_en.split(/\r?\n/));
       const inputWords = inputSeed.trim().split(/\s+/).filter(word => word.length > 0);
 
       seedWordCount = inputWords.length;
@@ -106,7 +106,7 @@
   </p>
   <h3>暗号生成</h3>
   <p>
-    こちらにお手持ちのwalletのシードフレーズ（２４単語）と復号する時に必要なパスワード（最低８文字）を入力してください。
+    こちらにお手持ちのwalletのシードフレーズ（１２単語から１６単語まで）と復号する時に必要なパスワード（最低８文字）を入力してください。
   </p>
   <p>
     パスワードは暗号文からシードフレーズを復元する時に必要なので絶対に忘れないでください。
