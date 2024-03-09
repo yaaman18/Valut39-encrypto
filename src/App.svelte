@@ -68,6 +68,17 @@
       },
     );
   }
+
+const handlePaste = (event: ClipboardEvent) => {
+    event.preventDefault();
+    const clipboardData = event.clipboardData;
+    if (clipboardData) {
+        const pastedData = clipboardData.getData('text');
+        // CRLFをLFに置換して、不要な改行を除去
+        inputSeed = pastedData.replace(/\r\n/g, '\n').replace(/\n/g, ' ');
+    }
+  };
+
 </script>
 
 <main>
@@ -105,7 +116,7 @@
   <form on:submit|preventDefault={handleFormSubmit}>
     <label>
       シードフレーズ:
-      <input type="text" bind:value={inputSeed} style="width: 100%;" />
+      <textarea bind:value={inputSeed} style="width: 100%; white-space: pre-wrap;" rows="2" on:paste={handlePaste}></textarea>
     </label>
     <p>入力した単語数: {seedWordCount}</p>
     {#if seedWarning}
@@ -204,6 +215,12 @@
   label {
     display: block;
     margin-bottom: 10px;
+  }
+  textarea{
+    padding: 5px;
+    font-size: 16px;
+    width: 48vw;
+    height: 12vw;
   }
   input {
     padding: 5px;
