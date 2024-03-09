@@ -32,7 +32,7 @@
     }
     try {
       const wordlist_en: string = await invoke("read_wordlist_file");
-      const wordSet = new Set(wordlist_en.split("\n"));
+      const wordSet = new Set(wordlist_en.split(/\r?\n/));
       const inputWords = inputSeed.trim().split(/\s+/).filter(word => word.length > 0);
 
       seedWordCount = inputWords.length;
