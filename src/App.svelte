@@ -8,6 +8,8 @@
   let showPassword = false;
   let seedWarning = "";
   let seedWordCount = 0;
+  let minimumWordCount = 12;
+
 
   $: seedWordCount = inputSeed
     .split(" ")
@@ -43,8 +45,8 @@
       }
 
       for (let word of inputWords) {
-        if (inputWords.length < minimumWordCount || inputWords.some(word => !wordSet.has(word))) {
-  seedWarning = "シードフレーズの単語が間違っています";
+   if (inputWords.length < 12 || inputWords.length >= 16 || inputWords.some(word => !wordSet.has(word))) {
+  seedWarning = "シードフレーズは12単語以上16単語未満にしてください";
   return;
 }
       }
