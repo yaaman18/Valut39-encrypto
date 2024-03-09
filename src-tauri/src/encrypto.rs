@@ -59,12 +59,12 @@ pub async fn minimalize_seeds(args: MinimalizeSeedsArgs) -> tauri::Result<String
 
 }
 
-fn string_to_48_byte_array(input: &str) -> Result<Vec<u8>, &'static str> {
-    let mut buffer = vec![0u8; 48]; // 48 bytes buffer initialized with zeros
+fn string_to_32_byte_array(input: &str) -> Result<Vec<u8>, &'static str> {
+    let mut buffer = vec![0u8; 32]; // 32 bytes buffer initialized with zeros
     let input_bytes = input.as_bytes();
 
     if input_bytes.len() > buffer.len() {
-        return Err("String too long to convert to 48-byte array");
+        return Err("String too long to convert to 32-byte array");
     }
 
     buffer[..input_bytes.len()].copy_from_slice(input_bytes);
@@ -86,15 +86,24 @@ async fn generate_cipher(input_seed: &str, password: &str) -> Result<String, Box
     let nonce_buff = [0u8; 12];
     let nonce: GenericArray<u8, U12> = GenericArray::clone_from_slice(&nonce_buff);
 
+    // 入力されたシードフレーズのバイト表現を取得
+    let input_seed_bytes = input_seed.as_bytes();
 
-    let input_seed_bytes = match string_to_48_byte_array(input_seed) {
-        Ok(buffer) => buffer,
-        Err(e) => return Err(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidInput, e))),
+    // 入力されたシードフレーズが32バイト未満かチェック
+    let processed_seed_bytes = if input_seed_bytes.len() <= 32 {
+        // 32バイト未満の場合、string_to_32_byte_array関数を使用して処理
+        match string_to_32_byte_array(input_seed) {
+            Ok(buffer) => buffer,
+            Err(e) => return Err(Box::new(std::io::Error::new(std::io::ErrorKind::InvalidInput, e))),
+        }
+    } else {
+        // 32バイト以上の場合、入力をそのまま使用
+        input_seed_bytes.to_vec()
     };
 
     let mut cipher = ChaCha20::new(&secret, &nonce);
 
-    let mut encrypted_bytes = input_seed_bytes.to_vec();
+    let mut encrypted_bytes = processed_seed_bytes.to_vec();
     cipher.apply_keystream(&mut encrypted_bytes);
     let encrypted = bs58::encode(encrypted_bytes).into_string();
 
