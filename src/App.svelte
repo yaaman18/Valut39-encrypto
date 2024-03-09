@@ -8,6 +8,7 @@
   let showPassword = false;
   let seedWarning = "";
   let seedWordCount = 0;
+  let minimumWordCount = 12;
 
   $: seedWordCount = inputSeed
     .split(" ")
