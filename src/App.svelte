@@ -26,7 +26,7 @@
     seedWordCount = inputWords.length;
 
     if (seedWordCount < 12 || seedWordCount > 24) {
-        seedWarning = "シードフレーズは12文字以上24文字以下で入力してください";
+        seedWarning = "Please enter a seed phrase between 12 and 24 words.";
         return;
     }
     try {
@@ -39,13 +39,13 @@
 
       const uniqueWordsSet = new Set(inputWords);
       if (uniqueWordsSet.size !== inputWords.length) {
-        seedWarning = "シードフレーズに同じ単語を2回入力しないでください";
+        seedWarning = "Do not enter the same word twice in your seed phrase.";
         return;
       }
 
       for (let word of inputWords) {
         if (inputWords.length < minimumWordCount || inputWords.some(word => !wordSet.has(word))) {
-  seedWarning = "シードフレーズの単語が間違っています";
+  seedWarning = "The words in your seed phrase are incorrect";
   return;
 }
       }
@@ -66,10 +66,10 @@
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text).then(
       function () {
-        console.log("コピー成功");
+        console.log("Copy successful");
       },
       function (err) {
-        console.error("コピー失敗", err);
+        console.error("Copy failed", err);
       },
     );
   }
@@ -79,7 +79,6 @@
     const clipboardData = event.clipboardData;
     if (clipboardData) {
         const pastedData = clipboardData.getData('text');
-        // CRLFをLFに置換して、不要な改行を除去
         inputSeed = pastedData.replace(/\r\n/g, '\n').replace(/\n/g, ' ');
     }
   };
@@ -87,47 +86,32 @@
 </script>
 
 <main>
-  <h1>Valut39: あなたのデジタル資産を安全に管理</h1>
-  <h2>シンプルで安全なウォレット、手の中に。</h2>
+  <h1>Valut39</h1>
+
+  <h2>Generate encryption</h2>
   <p>
-    Valut39は、デジタル通貨の管理をよりシンプルで安全にするための革新的なウォレットアプリケーションです。ユーザーフレンドリーなインターフェイスと先進的なセキュリティ機能を組み合わせて、初心者から上級者まで、誰でも簡単にデジタル資産を管理できます。
-  </p>
-  <h3>主な機能:</h3>
-  <ul>
-    <li>セキュアな暗号化</li>
-    <li>マルチプラットフォーム対応</li>
-    <li>直感的な操作</li>
-    <li>カスタマーサポート</li>
-  </ul>
-  <p>
-    Valut39で、デジタル通貨の新しい時代を体験しましょう。今すぐダウンロードして、安全で便利なデジタル資産管理の世界へ飛び込みましょう。
-  </p>
-  <h3>暗号生成</h3>
-  <p>
-    こちらにお手持ちのwalletのシードフレーズ（１２単語から１６単語まで）と復号する時に必要なパスワード（最低８文字）を入力してください。
+    Please enter your wallet's seed phrase and your chosen password here.
   </p>
   <p>
-    パスワードは暗号文からシードフレーズを復元する時に必要なので絶対に忘れないでください。
+    Never forget your password, as it is required to restore your seed phrase from the encrypted text.
   </p>
   <p>
-    入力するパスワードは半角英数字のみでスペースを入れずに入力してください。
+    Please enter your password using only alphanumeric characters, without spaces.
   </p>
-  <p>ご使用の際はハッキング被害の可能性を減らすためにオフライン環境下での使用を推奨します。</p>
-  <p>
-    また、パソコンの中にシードフレーズもパスワードも保存しないので安心してご利用いただけます
-  </p>
+  <p>We recommend using this application in an offline environment to reduce the risk of hacking.</p>
+
   <form on:submit|preventDefault={handleFormSubmit}>
     <label>
-      シードフレーズ:
+      seed phrase:
       <textarea bind:value={inputSeed} style="width: 100%; white-space: pre-wrap;" rows="2" on:paste={handlePaste}></textarea>
     </label>
-    <p>入力した単語数: {seedWordCount}</p>
+    <p>Number of words entered: {seedWordCount}</p>
     {#if seedWarning}
       <p style="color: red;">{seedWarning}</p>
     {/if}
 
     <label>
-      パスワード:
+      password:
       {#if showPassword}
         <input
           type="text"
@@ -138,7 +122,7 @@
           class="password-input"
         />
         <button type="button" on:click={() => copyToClipboard(password)}
-          >パスワードをコピー</button
+          >copy password</button
         >
       {:else}
         <input
@@ -149,26 +133,26 @@
           class="password-input"
         />
         <button type="button" on:click={() => copyToClipboard(password)}
-          >パスワードをコピー</button
+          >copy password</button
         >
       {/if}
       <button
         type="button"
         on:click={togglePasswordVisibility}
         class="toggle-button"
-        >{showPassword ? "非表示にする" : "パスワードを表示する"}</button
+        >{showPassword ? "disabled " : "enabled"}</button
       >
     </label>
     {#if passwordWarning}
       <p style="color: red;">{passwordWarning}</p>
     {/if}
-    <button type="submit">暗号文を生成する</button>
+    <button type="submit">Generate encrypted text</button>
   </form>
 
   {#if cipher}
-    <p>暗号文: {cipher}</p>
+    <p>encrypted text: {cipher}</p>
     <button type="button" on:click={() => copyToClipboard(cipher)}
-      >暗号文をコピー</button
+      >copy encrypted text</button
     >
   {/if}
 </main>
@@ -198,11 +182,7 @@
     margin-bottom: 15px;
   }
 
-  h3 {
-    font-size: 18px;
-    margin-top: 30px;
-    margin-bottom: 20px;
-  }
+
 
   form {
     margin: 6px 0;
@@ -211,10 +191,7 @@
     font-size: 16px;
     margin-bottom: 10px;
   }
-  ul {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
+
   label {
     display: block;
     margin-bottom: 10px;
